@@ -1,0 +1,32 @@
+[
+  {
+    "id": "us-senate-001",
+    "text": "The United States Senate passed a sweeping climate bill authorizing federal investment in renewable energy infrastructure and carbon capture technology across several states.",
+    "metadata": { "region": "us", "type": "legislation", "chamber": "senate" }
+  },
+  {
+    "id": "us-house-002",
+    "text": "The House of Representatives debated an appropriations bill funding border security and immigration enforcement, with amendments proposed by both parties during the markup session.",
+    "metadata": { "region": "us", "type": "legislation", "chamber": "house" }
+  },
+  {
+    "id": "us-treaty-003",
+    "text": "A bipartisan resolution urged ratification of the nuclear arms reduction treaty, citing national security interests and the need for renewed diplomatic engagement with allied nations.",
+    "metadata": { "region": "us", "type": "treaty", "chamber": "senate" }
+  },
+  {
+    "id": "us-econ-004",
+    "text": "Lawmakers introduced legislation imposing trade sanctions and export controls on strategic semiconductor technology to protect domestic manufacturing and supply chain resilience.",
+    "metadata": { "region": "us", "type": "legislation", "topic": "trade" }
+  },
+  {
+    "id": "us-judiciary-005",
+    "text": "The judiciary committee held confirmation hearings for a federal appellate judge, questioning the nominee on constitutional interpretation, precedent, and administrative law.",
+    "metadata": { "region": "us", "type": "hearing", "chamber": "senate" }
+  },
+  {
+    "id": "us-energy-006",
+    "text": "A new energy policy framework proposed tax incentives for solar and wind power generation while phasing out subsidies for fossil fuel extraction on public lands.",
+    "metadata": { "region": "us", "type": "policy", "topic": "energy" }
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "eu-parliament-101",
+    "text": "The European Parliament approved a landmark digital markets regulation targeting anticompetitive practices by large technology platforms operating across member states.",
+    "metadata": { "region": "eu", "type": "regulation", "topic": "digital" }
+  },
+  {
+    "id": "eu-climate-102",
+    "text": "European Union member states negotiated binding emissions targets and a carbon border adjustment mechanism as part of the broader green transition legislative package.",
+    "metadata": { "region": "eu", "type": "legislation", "topic": "climate" }
+  },
+  {
+    "id": "uk-parliament-103",
+    "text": "The United Kingdom Parliament debated a trade bill governing post-Brexit customs arrangements, tariffs, and regulatory alignment with continental European markets.",
+    "metadata": { "region": "uk", "type": "legislation", "topic": "trade" }
+  },
+  {
+    "id": "eu-security-104",
+    "text": "A joint defense resolution called for increased military cooperation, coordinated sanctions, and a unified response to escalating geopolitical tensions on the eastern frontier.",
+    "metadata": { "region": "eu", "type": "resolution", "topic": "defense" }
+  },
+  {
+    "id": "eu-migration-105",
+    "text": "Ministers proposed reforms to the asylum and migration pact, establishing shared responsibility mechanisms and border processing centers among participating nations.",
+    "metadata": { "region": "eu", "type": "policy", "topic": "migration" }
+  },
+  {
+    "id": "uk-energy-106",
+    "text": "British lawmakers passed an energy security bill accelerating investment in offshore wind, nuclear power, and domestic renewable generation to reduce reliance on imported gas.",
+    "metadata": { "region": "uk", "type": "legislation", "topic": "energy" }
+  }
+]

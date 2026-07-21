@@ -1,0 +1,12 @@
+# Build artifacts
+bin/
+/agora-worker
+/agora-coordinator
+/worker
+/coordinator
+
+# Local runtime state (run_local.sh)
+.run/
+
+# Logs
+*.log
