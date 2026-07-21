@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package agora.v1;
+
+// The generated Go code lands in proto/agorapb with package name `agorapb`.
+option go_package = "github.com/cadenchuang/agora/proto/agorapb;agorapb";
+
+// =============================================================================
+// Search domain
+// =============================================================================
+
+// Filter is a simple key/value predicate applied against document metadata
+// (e.g. {"jurisdiction": "us-senate"}). Empty filters match all documents.
+message Filter {
+  string key = 1;
+  string value = 2;
+}
+
+// SearchRequest is issued by a client to the coordinator, and fanned out by the
+// coordinator to each worker. `top_k` bounds the number of results a worker
+// returns so that inter-node payloads stay small.
+message SearchRequest {
+  string query = 1;
+  int32 top_k = 2;
+  repeated Filter filters = 3;
+  // Optional trace/correlation id propagated across the scatter-gather path.
+  string request_id = 4;
+}
+
+// SearchResult is a single ranked document hit produced by a worker.
+message SearchResult {
+  string doc_id = 1;
+  double score = 2;          // BM25 relevance score.
+  string text_snippet = 3;   // Short excerpt for client display.
+  string node_id = 4;        // Worker/shard that produced this hit.
+}
+
+// SearchResponse carries the ranked hits plus timing metadata. Workers return
+// their local top-K; the coordinator merges these into a global top-K.
+message SearchResponse {
+  repeated SearchResult results = 1;
+  int64 execution_time_ms = 2;
+  // Nodes that actually contributed results (useful under partial failure).
+  repeated string served_by = 3;
+  // Nodes that were expected but timed out or errored (empty on full success).
+  repeated string degraded_nodes = 4;
+}
+
+// =============================================================================
+// Health domain
+// =============================================================================
+
+message HealthCheckRequest {
+  // Identifier of the caller (coordinator) requesting the check.
+  string requester_id = 1;
+}
+
+message HealthCheckResponse {
+  string node_id = 1;
+  bool active = 2;
+  int64 document_count = 3;
+  int64 timestamp_unix_ms = 4;
+}
+
+// Heartbeat is pushed by a worker to the coordinator on an interval so the
+// coordinator can maintain liveness without polling every node.
+message Heartbeat {
+  string node_id = 1;
+  string address = 2;        // host:port the worker's SearchService listens on.
+  bool active = 3;
+  int64 document_count = 4;
+  int64 timestamp_unix_ms = 5;
+}
+
+message HeartbeatAck {
+  bool accepted = 1;
+  // Coordinator-suggested next heartbeat interval in milliseconds.
+  int64 next_interval_ms = 2;
+}
+
+// =============================================================================
+// Services
+// =============================================================================
+
+// SearchService is implemented by every worker and consumed by the coordinator.
+service SearchService {
+  rpc Search(SearchRequest) returns (SearchResponse);
+}
+
+// HealthService supports both pull (Check) and push (ReportHeartbeat) liveness.
+// Workers implement Check; the coordinator implements ReportHeartbeat.
+service HealthService {
+  rpc Check(HealthCheckRequest) returns (HealthCheckResponse);
+  rpc ReportHeartbeat(Heartbeat) returns (HeartbeatAck);
+}

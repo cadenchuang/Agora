@@ -1,0 +1,80 @@
+# Agora local cluster: 1 coordinator + 3 workers, each holding a distinct shard.
+#
+#   docker compose -f deploy/docker-compose.yml up --build
+#
+# Then query the coordinator:
+#   curl "http://localhost:8080/search?q=climate%20treaty&k=5"
+#   curl "http://localhost:8080/status"
+#
+# Simulate failover by killing a worker:
+#   docker compose -f deploy/docker-compose.yml stop worker-2
+
+name: agora
+
+services:
+  coordinator:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: agora:latest
+    command: ["/usr/local/bin/agora-coordinator"]
+    environment:
+      AGORA_NODE_ID: coordinator
+      AGORA_GRPC: ":9000"
+      AGORA_HTTP: ":8080"
+      AGORA_FANOUT_MS: "200"
+      AGORA_HEARTBEAT_TTL_MS: "3000"
+      AGORA_LOG_LEVEL: "info"
+    ports:
+      - "8080:8080"   # client HTTP API
+      - "9000:9000"   # heartbeat gRPC sink
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/healthz"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+
+  worker-0:
+    image: agora:latest
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    command: ["/usr/local/bin/agora-worker"]
+    environment:
+      AGORA_NODE_ID: worker-0
+      AGORA_LISTEN: ":9101"
+      AGORA_ADVERTISE: "worker-0:9101"
+      AGORA_SHARD: "/app/data/shard_0.json"
+      AGORA_COORDINATOR: "coordinator:9000"
+      AGORA_HEARTBEAT_MS: "1000"
+      AGORA_LOG_LEVEL: "info"
+    depends_on:
+      - coordinator
+
+  worker-1:
+    image: agora:latest
+    command: ["/usr/local/bin/agora-worker"]
+    environment:
+      AGORA_NODE_ID: worker-1
+      AGORA_LISTEN: ":9101"
+      AGORA_ADVERTISE: "worker-1:9101"
+      AGORA_SHARD: "/app/data/shard_1.json"
+      AGORA_COORDINATOR: "coordinator:9000"
+      AGORA_HEARTBEAT_MS: "1000"
+      AGORA_LOG_LEVEL: "info"
+    depends_on:
+      - coordinator
+
+  worker-2:
+    image: agora:latest
+    command: ["/usr/local/bin/agora-worker"]
+    environment:
+      AGORA_NODE_ID: worker-2
+      AGORA_LISTEN: ":9101"
+      AGORA_ADVERTISE: "worker-2:9101"
+      AGORA_SHARD: "/app/data/shard_2.json"
+      AGORA_COORDINATOR: "coordinator:9000"
+      AGORA_HEARTBEAT_MS: "1000"
+      AGORA_LOG_LEVEL: "info"
+    depends_on:
+      - coordinator

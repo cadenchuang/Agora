@@ -1,0 +1,32 @@
+[
+  {
+    "id": "un-resolution-201",
+    "text": "The United Nations Security Council adopted a resolution imposing targeted sanctions and an arms embargo in response to the ongoing regional conflict and humanitarian crisis.",
+    "metadata": { "region": "global", "type": "resolution", "topic": "security" }
+  },
+  {
+    "id": "geo-trade-202",
+    "text": "Analysts warned that escalating trade sanctions and tariff retaliation between major economies could fracture global supply chains and reshape geopolitical alliances.",
+    "metadata": { "region": "global", "type": "analysis", "topic": "trade" }
+  },
+  {
+    "id": "geo-climate-203",
+    "text": "At the international climate summit, nations pledged emissions reductions and financing for developing countries, though critics questioned enforcement of the voluntary treaty commitments.",
+    "metadata": { "region": "global", "type": "treaty", "topic": "climate" }
+  },
+  {
+    "id": "geo-conflict-204",
+    "text": "Diplomatic negotiations stalled as territorial disputes and military buildups heightened tensions, prompting neighboring states to seek security guarantees and defensive alliances.",
+    "metadata": { "region": "global", "type": "analysis", "topic": "security" }
+  },
+  {
+    "id": "geo-energy-205",
+    "text": "Volatile energy markets and pipeline disruptions drove nations to diversify supply, accelerate renewable investment, and stockpile strategic petroleum and natural gas reserves.",
+    "metadata": { "region": "global", "type": "analysis", "topic": "energy" }
+  },
+  {
+    "id": "geo-cyber-206",
+    "text": "A multinational task force investigated state-sponsored cyber operations targeting critical infrastructure, calling for new norms, treaties, and coordinated sanctions against perpetrators.",
+    "metadata": { "region": "global", "type": "analysis", "topic": "cyber" }
+  }
+]
