@@ -332,7 +332,7 @@ A Go benchmark harness exercises the coordinator under load and reports latency 
 go run ./scripts/test_search.go -q "climate treaty sanctions" -k 5 -n 500 -c 32
 ```
 
-**Observed on a local 1-coordinator / 3-worker cluster** (Apple Silicon, no Docker):
+**One local run** on a 1-coordinator / 3-worker cluster (Apple Silicon, no Docker), against the 18-document sample corpus:
 
 | Metric | Value |
 |--------|-------|
@@ -341,6 +341,8 @@ go run ./scripts/test_search.go -q "climate treaty sanctions" -k 5 -n 500 -c 32
 | Latency p95 | ~4.5 ms |
 | Latency p99 | ~6.8 ms |
 | Failures | 0 (all workers healthy) |
+
+Read these as a harness-latency measurement, not a scale claim: with 18 documents the index fits in cache and the numbers say more about the scatter-gather overhead than about retrieval at scale. No benchmark results file is committed to the repo, so re-run `test_search.go` to reproduce them.
 
 **Failover scenario** (kill one worker mid-flight):
 
@@ -413,6 +415,14 @@ Three JSON shards (6 documents each, 18 total) themed around legislative and geo
 Each document includes metadata for filter testing (`region`, `type`, `topic`, …).
 
 ---
+
+## Limits — what this is not
+
+- **Tiny sample corpus:** 18 documents (6 per shard). The engine is real, but nothing here proves behaviour at 250,000 documents — that number does not appear anywhere in this repo.
+- **Benchmarks are a single local run** (see above), with no saved results artifact and no CI to re-run them. There is no CI configuration in this repo at all.
+- **No persistence:** indexes are built in memory from the shard JSON files at startup; there are no snapshots or hot reload.
+- **No metrics:** structured logs only — no Prometheus endpoint, so fan-out latency and degraded-node rate are not observable in production.
+- **HTTP-only client API:** the coordinator serves search over HTTP; there is no coordinator-side gRPC search API yet.
 
 ## Roadmap
 
